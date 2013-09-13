@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title></title>
+<base href='{echo:$siteDomain;/}' />
+<link rel="stylesheet" type="text/css" href="skin/default/jooyea/css/iframe.css">
+</head>
+<body id="iframecontent">
+<div class="create_button"><a href="modules.php?app=event_info">{echo:lp{ef_launch_activity};/}</a></div>
+<h2 class="app_event">{echo:lp{ef_activity};/}</h2>
+<div class="tabs">
+  <ul class="menu">
+    <li><a href="modules.php?app=event_info&event_id={echo:$event_id;/}" hidefocus="true">{echo:lp{ef_update_activity};/}</a></li>
+    <li class="active"><a href="modules.php?app=event_member_manager&event_id={echo:$event_id;/}" hidefocus="true">{echo:lp{ef_member_management};/}</a></li>
+	<li><a href="modules.php?app=event_upload_photo&event_id={echo:$event_id;/}" hidefocus="true">{echo:lp{ef_upload_photo};/}</a></li>
+  </ul>
+</div>
+<div class="search_friend">
+	<select onchange="location.href='modules.php?app=event_member_manager&event_id={echo:$event_id;/}&mod='+this.value;">
+		<option value='0' {echo:$mod==0 ? 'selected':'';/}>{echo:lp{ef_participate_activity};/}</option>
+		<option value='1' {echo:$mod==1 ? 'selected':'';/}>{echo:lp{ef_attention_activity};/}</option>
+		<option value='2' {echo:$mod==2 ? 'selected':'';/}>{echo:lp{ef_need_review};/}</option>
+	</select>
+</div>
+{sta:if($mod==0)[exc]}
+<div class="rs_head">{echo:lp{ef_full_member};/}</div>
+<table class="msg_inbox" cellspacing="1" cellpadding="1">
+	<thead>
+		<tr>
+			<td>{echo:lp{ef_name};/}</td>
+			<td>{echo:lp{ef_sex};/}</td>
+			<td>{echo:lp{ef_identity};/}</td>
+			<td>{echo:lp{ef_operation};/}</td>
+		</tr>
+  </thead>
+	{sta:foreach($member_rs as $rs)[loop]}
+
+		{sta:$act_show=show_manage_act($event_id,$status,$rs['status']);/}
+
+    <tr>
+    	<td>{echo:$rs['user_name'];/}</td>
+    	<td>{echo:get_pals_sex($rs['user_sex']);/}</td>
+    	<td>{echo:get_member_status($rs['status']);/}</td>
+    	<td>
+    		<a href="home.php?h={echo:$rs['user_id'];/}" target="_blank">{echo:lp{ef_select};/}</a>
+				<span class="{echo:$act_show['b_del'];/}">|&nbsp <a href="do.php?act=event_del_member&member_id={echo:$rs['user_id'];/}&event_id={echo:$event_id;/}" onclick='return confirm("{echo:lp{ef_confirm_delete};/}")'>{echo:lp{ef_delete};/}</a></span>
+				<span class="{echo:$act_show['b_app'];/}">|&nbsp <a href="do.php?act=event_appoint&member_id={echo:$rs['user_id'];/}&event_id={echo:$event_id;/}">{echo:lp{ef_set_organizer};/}</a> </span>
+				<span class="{echo:$act_show['b_rev'];/}">|&nbsp <a href="do.php?act=event_revoke&member_id={echo:$rs['user_id'];/}&event_id={echo:$event_id;/}">{echo:lp{ef_revocation_organizer};/}</a></span>
+    	</td>
+    </tr>
+
+  {end:foreach/}
+
+</table>
+{end:if/}
+
+{sta:if($mod==1)[exc]}
+<div class="rs_head">{echo:lp{ef_concerned_user};/}</div>
+<table class="msg_inbox" cellspacing="1" cellpadding="1">
+	{sta:foreach($member_rs as $rs)[loop]}
+	<tr>
+		<td>{echo:$rs['user_name'];/}</td>
+		<td>{echo:get_pals_sex($rs['user_sex']);/}</td>
+		<td>{echo:lp{ef_failed};/}</td>
+		<td>{echo:date('Y-m-d :H:i:s',$rs['dateline']);/}</td>
+		<td>
+			<a href="home.php?h={echo:$rs['user_id'];/}" target="_blank">{echo:lp{ef_select};/}</a>
+		</td>
+	</tr>
+	{end:foreach/}
+</table>
+{end:if/}
+
+{sta:if($mod==2)[exc]}
+<div class="rs_head">{echo:lp{ef_pending_member};/}</div>
+<table class="msg_inbox" cellspacing="1" cellpadding="1">
+	{sta:foreach($member_rs as $rs)[loop]}
+	<tr>
+		<td>{echo:$rs['user_name'];/}</td>
+		<td>{echo:get_pals_sex($rs['user_sex']);/}</td>
+		<td>{echo:lp{ef_failed};/}</td>
+		<td>{echo:date('Y-m-d :H:i:s',$rs['dateline']);/}</td>
+
+		<td>
+			<a href="do.php?act=event_approve&member_id={echo:$rs['user_id'];/}&event_id={echo:$event_id;/}">{echo:lp{ef_verify_join};/}</a>&nbsp|&nbsp
+			<a href="do.php?act=event_del_req&member_id={echo:$rs['user_id'];/}&event_id={echo:$event_id;/}">{echo:lp{ef_delete};/}</a>&nbsp|&nbsp
+			<a href="home.php?h={echo:$rs['user_id'];/}" target="_blank">{echo:lp{ef_select};/}</a>
+		</td>
+	</tr>
+	{end:foreach/}
+</table>
+{end:if/}
+
+{echo:page_show($isNull,$page_num,$page_total);/}
+
+<div class="guide_info {echo:$list_none;/}">
+	{echo:lp{ef_data_none};/}
+</div>
+
+</body>
+</html>

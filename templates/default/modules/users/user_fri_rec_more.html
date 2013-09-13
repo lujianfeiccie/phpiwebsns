@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title></title>
+<base href='{echo:$siteDomain;/}' />
+<link rel="stylesheet" type="text/css" href="skin/default/jooyea/css/iframe.css">
+<script type="text/javascript" src="servtools/ajax_client/ajax.js"></script>
+<script type='text/javascript'>
+function mypals_add_callback(content,other_id){
+	if(content=="success"){
+		parent.Dialog.alert("{echo:lp{mp_suc_add};/}");
+		document.getElementById("operate_"+other_id).innerHTML="{echo:lp{mp_suc_add};/}";
+	}else{
+		parent.Dialog.alert(content);
+		document.getElementById("operate_"+other_id).innerHTML=content;
+	}
+}
+
+function mypals_add(other_id){
+	var mypals_add=new Ajax();
+	mypals_add.getInfo("do.php","get","app","act=add_mypals&other_id="+other_id,function(c){mypals_add_callback(c,other_id);}); 
+}
+function changeStyle(obj,p_id){
+	obj.className = 'hover';
+}
+function recoverStyle(obj,p_id){
+	obj.className = '';
+}
+</script>
+</head>
+<body id="iframecontent">
+  <div class="create_button"><a href="modules.php?app=mypals_search">{echo:lp{mp_add};/}</a></div>
+  <h2 class="app_friend">推荐用户</h2>
+  <div class="tabs">
+    <ul class="menu">
+      <li class="active"><a href="javascript:void(0)" title="推荐用户">推荐用户</a></li>
+    </ul>
+  </div>
+     <div id="mypals_iframe">
+		<div id="fri_bir" class="friend_list">
+			<ul class="user_list">
+                {sta:if(!empty($recommend))[exc]}
+                {sta:foreach($recommend as $val)[loop]}
+					<li onmouseover='changeStyle(this,{echo:$val['user_id'];/})' onmouseout='recoverStyle(this,{echo:$val['user_id'];/})'>
+						<div class="photo">
+						  <a href="home.php?h={echo:$val['user_id'];/}" target="_blank" class="avatar">
+							<img title="{echo:lp{mp_en_home};/}" src="{echo:$val['user_ico'];/}"  onerror="parent.pic_error(this)" /></a>
+						</div>
+						<dl>
+							<dt><a target="_blank" href="home.php?h={echo:$val['user_id'];/}" class="name">{echo:$val['user_name'];/}</a></dt>
+                            <dd>
+                            	<img style="cursor:pointer;" onclick="parent.{echo:$send_hi;/}({echo:$val["user_id"];/})" src="skin/default/jooyea/images/hi.gif" title="{echo:lp{f_greet};/}" />
+                                <img style="cursor:pointer;" onclick="javascript:{echo:str_replace("{uid}",$val['user_id'],$send_join_js);/}" src="skin/default/jooyea/images/add.gif"  title="{echo:str_replace("{he}",get_TP_pals_sex($val['user_sex']),lp{mp_add_mypals});/}" />	
+                           </dd>
+                            <div class="tool" id="ctrl_{echo:$val['user_id'];/}">
+                                <a class="send_bt" href='modules.php?app=msg_creator&2id={echo:$val["user_id"];/}&nw=1' target="frame_content" title='{echo:str_replace("{he}",get_TP_pals_sex($val["user_sex"]),lp{mp_scrip});/}'></a>
+                            </div>
+						</dl>
+					</li>
+                {end:foreach/}
+                {end:if/}
+			</ul>
+		</div>
+  </div>
+<div class="clear"></div>
+{echo:page_show($isNull,$page_num,$page_total);/}
+</body>
+</html>

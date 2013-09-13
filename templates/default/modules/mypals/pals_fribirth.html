@@ -1,0 +1,23 @@
+{sta:if(!empty($fir_list))[exc]}
+<div class="container">
+   <div class="sideitem_head"><h4>{echo:lp{mp_pal_birth};/}</h4><a href="modules.php?app=mypals_fribirth_month" target='frame_content'>{echo:lp{mp_more};/}</a></div>
+       <div class="sideitem_body">
+       <ul id='pals_fribirth' class="userlist">
+		{sta:foreach($fir_list as $val)[loop]}
+		<li>
+			<a class="avatar" href="home.php?h={echo:$val['user_id'];/}" target="_blank" title="{echo:lp{f_fri};/}">
+				<img src="{echo:$val['user_ico'];/}" />
+			</a>
+		
+			<span class="name">
+				<a class="name" href="home.php?h={echo:$val['user_id'];/}" target="_blank">{echo:$val['user_name'];/}</a>
+			</span>
+		
+			<span class="time">{echo:$val['birth_month'];/}-{echo:$val['birth_day'];/}</span>
+			<span><img style="cursor:pointer;" onclick="{echo:$send_hi;/}({echo:$val["user_id"];/})" src="skin/default/jooyea/images/hi.gif" title="{echo:lp{f_greet};/}" /></span>
+		</li>
+		{end:foreach/}
+		</ul>
+    </div>
+ </div>
+{end:if/}

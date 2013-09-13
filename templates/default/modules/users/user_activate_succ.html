@@ -1,0 +1,27 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title></title>
+<base href='{echo:$siteDomain;/}' />
+<link rel="stylesheet" href="skin/default/jooyea/css/layout.css" />
+</head>
+<body id="iframecontent">
+{inc:require('uiparts/guestheader.php');/}
+<div class="mail_sess_box">
+    <div class="mail_sess">
+        <p class="txt">激活邮件已经发送到你的邮箱{echo:$user_email;/}<br></p>
+        <p><a href="{sta:if(in_array($mail_add[2],array_keys($mail)))[exc]}{echo:$mail[$mail_add[2]];/}{end:if/}{sta:if(!in_array($mail_add[2],array_keys($mail)))[exc]}{echo:'http://www.'.$mail_add[2];/}{end:if/}" class="mail_sess_but">立即查看邮箱</a></p>
+    </div>
+    <div class="mail_step">
+        <p class="txt">还没有收到激活邮件？</p>
+        <ul>
+            <li>尝试到广告邮件、垃圾邮件目录里找找看。</li>
+            <li>邮件地址写错了？很抱歉，你需要<a href="modules.php?app=user_reg">重新注册</a></li>
+            <li>或者再次<a href='do.php?act=user_activation&user_email={echo:$user_email;/}'>重新发送激活邮件</a></li>
+        </ul>
+    </div>
+</div>
+{inc:require('uiparts/footor.php');/}
+</body>
+</html>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin>
+  <title>article_widget</title>
+  <version>0.6</version>
+  <author>Jooyea</author>
+  <image>img/article.jpg</image>
+  <description>文章管理的插件</description>
+  <website/>
+  <sqlpath>install/install.sql</sqlpath>
+  <backrights>article_01:系统设置,article_02:广告管理,article_03:幻灯管理,article_04:标签管理</backrights>
+  <frontrights>article_admin:article前台管理员</frontrights>
+  <urls>
+    <url id="blog_add_bottom">article_blogCon.php</url>
+    <url id="main_left_MENU">article_menu.php</url>
+    <url id="plugin_back">../../article/admin_back.php</url>
+  </urls>
+</plugin>

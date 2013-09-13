@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title></title>
+<base href='{echo:$siteDomain;/}' />
+<link rel="stylesheet" type="text/css" href="skin/default/jooyea/css/iframe.css">
+<SCRIPT language=JavaScript src="servtools/ajax_client/ajax.js"></SCRIPT>
+<script type='text/javascript'>
+function mypals_add_callback(content,other_id){
+	if(content=="success"){
+		parent.Dialog.alert("{echo:lp{mp_suc_add};/}");
+		document.getElementById("operate_"+other_id).innerHTML="{echo:lp{mp_suc_add};/}";
+	}else{
+		parent.Dialog.alert(content);
+		document.getElementById("operate_"+other_id).innerHTML=content;
+	}
+}
+
+function mypals_add(other_id){
+	var mypals_add=new Ajax();
+	mypals_add.getInfo("do.php","get","app","act=add_mypals&other_id="+other_id,function(c){mypals_add_callback(c,other_id);}); 
+}
+</script>
+</head>
+
+<body id="iframecontent">
+{sta:if($is_self=='Y')[exc]}
+<div class="create_button">
+	<a href="modules.php?app=event_list&mod=all" hidefocus="true">{echo:lp{ef_all_activity};/}</a>
+</div>
+{end:if/}
+{sta:if($status>2 && $is_self=='Y')[exc]}
+<div class="create_button">
+	<a href="modules.php?app=event_upload_photo&event_id={echo:$event_id;/}" hidefocus="true">{echo:lp{ef_upload_photo};/}</a>
+</div>
+{end:if/}
+<h2 class="app_event">{echo:lp{ef_activity};/}</h2>
+<div class="tabs">
+	<ul class="menu">
+		<li><a href="modules.php?app=event_space&event_id={echo:$event_id;/}&user_id={echo:$userid;/}" hidefocus="true">{echo:lp{ef_activity};/}</a></li>
+		<li class="active"><a href="modules.php?app=event_member&event_id={echo:$event_id;/}&user_id={echo:$userid;/}" hidefocus="true">{echo:lp{ef_member};/}</a></li>
+		<li><a href="modules.php?app=event_list_photo&event_id={echo:$event_id;/}&user_id={echo:$userid;/}" hidefocus="true">{echo:lp{ef_photo};/}</a></li>
+	</ul>
+</div>
+
+{sta:foreach($event_members as $rs)[loop]}
+<div class="pals_list" onmouseover="this.className += ' pals_list_active';" onmouseout="this.className='pals_list';">
+	<div class="right">
+		<p id='operate_{echo:$rs["user_id"];/}'>
+		<a href=javascript:{echo:$ses_uid ? str_replace("{uid}",$rs['user_id'],$send_join_js):'parent.goLogin();';/}>{echo:str_replace("{he}",get_TP_pals_sex($rs['user_sex']),lp{mp_add_mypals});/}</a>
+		</p>
+		<a href=javascript:{echo:$ses_uid ? str_replace("{uid}",$rs['user_id'],$send_script_js):'parent.goLogin();';/} target="{echo:$target;/}">{echo:str_replace("{he}",get_TP_pals_sex($rs['user_sex']),lp{mp_scrip});/}</a>
+	</div>
+	<div class="avatar">
+		<a href="home.php?h={echo:$rs['user_id'];/}" target="_blank"><img src="{echo:$rs['user_ico'];/}" onerror="parent.pic_error(this)" alt="{echo:$rs['user_name'];/}" title='{echo:lp{mp_sex};/}:{echo:get_pals_sex($rs['user_sex']);/}' /></a>
+	</div>
+	<dl>
+	  <dd>{echo:lp{mp_name};/}：{echo:filt_word($rs["user_name"]);/}</dd>
+		<dd>{echo:lp{mp_reside};/}：{echo:get_manage_reside($rs['reside_province'],$rs['reside_city']);/}</dd>
+	  <dd>{echo:lp{ef_identity};/}：{echo:get_member_status($rs['status']);/}</dd>
+	</dl>
+</div>
+{end:foreach/}
+<div class="clear"></div>
+{echo:page_show($isNull,$page_num,$page_total);/}
+</body>
+</html>

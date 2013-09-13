@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title></title>
+<base href='{echo:$siteDomain;/}' />
+<link rel="stylesheet" type="text/css" href="skin/default/jooyea/css/iframe.css">
+<link rel="stylesheet" type="text/css" href="servtools/menu_pop/menu_pop.css">
+<script type='text/javascript' src='servtools/ajax_client/ajax.js'></script>
+<SCRIPT language=JavaScript src="skin/default/js/jooyea.js"></SCRIPT>
+<SCRIPT language=JavaScript src="servtools/kindeditor/kindeditor.js"></SCRIPT>
+<script Language="JavaScript">
+is_submit=0;
+
+function CheckForm(){
+	if(document.myform.title.value==""){
+		parent.Dialog.alert("请填写您的问题！");
+		document.myform.title.focus();
+		return false;
+	}
+	if(document.myform.type_id.value=='0' || document.myform.type_name.value==''){
+		parent.Dialog.alert("请选择问题类别！");
+		document.myform.type_id.focus();
+		return false;
+	}
+	//校验悬赏积分是否足够
+	var reward=document.myform.reward.value;
+	if({echo:$ask_id;/}){
+		if(reward > {echo:$ask_row['reward'];/} && {echo:$integral;/} < (reward-{echo:$ask_row['reward'];/})){
+			parent.Dialog.alert("您的悬赏积分不足！");
+			document.myform.reward.focus();
+			return false;
+		}
+	}
+	else if({echo:$integral;/} < reward){
+		parent.Dialog.alert("您的悬赏积分不足！");
+		document.myform.reward.focus();
+		return false;
+	}
+}
+
+parent.hiddenDiv();
+</script>
+</head>
+<body id="iframecontent">
+    <div class="create_button"><a href="modules.php?app=ask&mod=mine">我的问题</a></div>
+    <h2 class="app_ask">问吧</h2>
+    <div class="tabs">
+        <ul class="menu">
+            <li class="active"><a href="javascript:;">{echo:$titleStr;/}</a></li>
+        </ul>
+    </div>
+   <form action="{echo:$form_action;/}" method="post"  name="myform" onSubmit="return CheckForm();">
+	<table border="0" cellpadding="2" cellspacing="1" class="form_table">
+        <tr>
+			<th>你的问题：</th>
+			<td >
+			{sta:if(!$ask_id)[exc]}
+				<input class="med-text" type="text" autocomplete='off' name="title" value="{echo:$ask_row['title'];/}" maxlength="30" >
+			{end:if/}
+			{sta:if($ask_id)[exc]}
+			<p>{echo:$ask_row['title'];/}</p>
+			{end:if/}
+			</td>
+		</tr>
+		<tr>
+			<th valign="top">详细说明：</th>
+			<td style="line-height:1.5">
+			{sta:if(!$ask_id)[exc]}
+				   <textarea name="detail" id="detail" class="textarea" style='width:560px;height:400px;_width:560px;'>{echo:$ask_row['detail'];/}</textarea>
+			{end:if/}
+			{sta:if($ask_id)[exc]}
+			<p>{echo:$ask_row['detail'];/}</p>
+			{end:if/}
+			</td>
+		</tr>
+		<tr {echo:$ask_id?"":"style='display:none'";/}>
+			<th valign="top">补充说明：</th>
+			<td style="line-height:1.5">
+				   <textarea name="replenish" id="replenish" class="textarea" style='width:560px;height:400px;_width:560px;' >{echo:$ask_row['replenish'];/}</textarea>
+			</td>
+		</tr>
+		<tr>
+			<th>问题类别：</th>
+			<td>
+				<input type="hidden" name="type_name" id="type_name" value="{echo:$ask_row['type_name'];/}" />
+				<select name="type_id" id="type_id" onchange="document.getElementById('type_name').value=this.options[selectedIndex].text"; {echo:$ask_id?'disabled':'';/}>
+				<option value="0">请选择问题类别</option>
+				{sta:foreach($type_rs as $val)[loop]}
+				<option value="{echo:$val['id'];/}">{echo:$val['name'];/}</option>
+				{end:foreach/}
+				</select>
+				<script language="javascript">document.getElementById('type_id').value="{echo:$ask_row['type_id'];/}";</script>
+			</td>
+		</tr>
+		<tr>
+			<th>悬赏积分：</th>
+			<td>
+				<select name="reward" id="reward">
+				{sta:foreach($reward_arr as $val)[loop]}
+					{sta:if($ask_row['reward'] <= $val)[exc]}
+						<option value="{echo:$val;/}">{echo:$val;/}</option>
+					{end:if/}
+				{end:foreach/}
+				</select>
+				<script language="javascript">document.getElementById('reward').value="{echo:$ask_row['reward'];/}";</script>
+			</td>
+		</tr>
+		<tr>
+			<th></th>
+			<td>
+				<input type=submit class="regular-btn" value="确定" onclick="javascript:is_submit=1;" />
+				<input type=button class="regular-btn" value="取消" onclick='location.href="{echo:$goBackUrl;/}"' />
+			</td>
+		</tr>
+  </table>
+  </form>
+<script type="text/javascript">
+{sta:if(!$ask_id)[exc]}
+KE.show({
+	id:'detail',
+	resizeMode:0
+});
+{end:if/}
+{sta:if($ask_id)[exc]}
+KE.show({
+	id:'replenish',
+	resizeMode:0
+});
+{end:if/}
+</script>  
+  
+</body>
+</html>

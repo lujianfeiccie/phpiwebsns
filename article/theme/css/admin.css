@@ -1,0 +1,37 @@
+@charset "utf-8";
+@import 'base.css';
+#iframecontent {background-image:none;background-color:#fff;padding-top:22px;}
+#iframecontent h2{font-size:14px; padding:4px 0 16px 30px;padding-bottom:16px; text-align:left; border-bottom:#dedede 1px solid; margin-top:-5px;_margin-right:-15px;}
+.msg_inbox{ width:100%; text-align:left; font-size:12px; line-height:24px; margin:-10px 0 -16px 0;}
+	.msg_inbox th {background-color:#F8F8F8;border-bottom:1px solid #ECECEC;border-top:1px solid #ECECEC;font-weight:normal;line-height:26px;margin:15px auto;padding:5px 5px 2px 10px;text-align:left;}
+	.msg_inbox td{border-bottom:1px dashed #DEDEDE;padding:12px 5px;}
+	 .msg_inbox a {color:#CE1221;}
+.rs_head {background-color:#F8F8F8;border-bottom:1px solid #ECECEC;border-top:1px solid #ECECEC;clear:both;color:#838383;font-weight:normal;line-height:26px;margin:15px auto;padding:5px 5px 2px 10px;text-align:left;width:98%;}
+	.rs_head span {margin:0 10px;}
+	.rs_head a {color:#CE1221;}
+.tabs li a{padding:6px 13px 0;_width:48px;_padding:7px 9px 0 13px;}	
+.regular-btn{color:#fff; margin:12px 12px 0 0; background:url(../img/global_button.gif) repeat-x; font-weight:bold; font-size:14px; line-height:28px; width:65px; height:28px; border:0;}
+.list_admin{}
+	.list_admin p{padding:10px;text-align:left;margin:0px;color:#ff0000;}
+	#insert_attrbute_div{}
+	#change_type_attribute_div{dborder-top:#000 3px solid;line-height:60px;}
+	.attribute_edit{margin:15px 0 0 0;text-align:left;}
+	.attribute_text{min-height:24px;}
+	.regular-text,.small-text,.small-text2,.med-text{border-top:1px #999999 solid;border-bottom:#e5e5e5 1px solid;border-right:#e5e5e5 1px solid;border-left:#999999 1px solid;padding:0 5px;line-height:24px; height:24px;background:url(../images/inputbg.gif);width:470px;}
+.med-text{width:300px;}
+.small-text{width:120px; height:21px;}
+.small-text2{width:150px; height:23px;}
+.add_p{}
+	.add_p ul li{margin:10px;}
+	.add_p ul li em{padding-right:10px;width:}
+.type_list{text-align:left;margin:15px 0 0 15px;}
+	.type_list ul{dheight:20px;overflow:hidden;}
+	.type_list ul li{padding:0 0 5px 0;margin:0px;line-height:28px;border-bottom:#ccc 1px dashed;}
+	.type_list ul li a:hover{text-decoration: none;}
+	.type_list ul em {color:#000;font-size:19px; font-family: Helvetica, Arial, sans-serif;font-weight:bold;}
+	.type_list ul span{margin:0 0 0 20px;}
+	.type_list ul span a{color:#ce1221;}
+	.type_btn a{float:left;padding:0px;}
+.attribute_list{text-align:left;margin:15px 0 0 0;}
+	.attribute_list p a{color:#ce1221;}
+	.attribute_list td{border-bottom:#ccc 1px dashed;}

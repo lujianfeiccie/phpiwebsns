@@ -1,0 +1,52 @@
+<!--顶部login_bar开始-->
+	<div class="login_bar">
+		<div class="login_tools">
+			<a onclick="this.style.behavior='url(#default#homepage)';this.setHomePage('{echo:$siteDomain;/}')" href="javascript:">·设为主页</a>
+			<a href="http://tech.jooyea.com/php_web/contact/" target="_blank" >·联系我们</a>
+			<a href="http://tech.jooyea.com/aboutus.php" target="_blank" >·关于我们</a>
+			<a href="{echo:$siteDomain;/}">·返回SNS</a>
+		</div>
+	</div>
+<!--顶部login_bar结束-->
+
+<!--header头部LOGO开始-->
+	<div class="header">
+		<span class="top_banner">
+		</span>
+		<a href="#"><img src="theme/img/logo.gif" alt="iWebCMS产品展示模块" /></a>
+		<div class="clear"></div>
+	</div>
+<!--header头部LOGO结束-->
+
+<!--导航开始-->
+	<div class="nav_box">
+		<div class="nav_de">
+			<ul class="nav">
+				<li><a href="index.php?app=view&index">首页</a></li>
+				{sta:foreach($channel_rs as $val)[loop]}
+				{echo:channel_type_rewrite($val['id'],$val['name'],$val['type_id'],$val['out_link']);/}
+				{end:foreach/}
+			</ul>
+			<span class="search">
+				<form action='index.php?app=view&list&mod=search' method='post'>
+				<input type="text" id="text" name="search"  />
+				<input type="submit" value="搜&nbsp;&nbsp;索" id="search_btn"  />
+				</form>
+			</span>
+		</div>
+	</div>
+    </div>
+<!--导航结束-->
+	
+<!--TAG标签开始-->
+	<div class="tag_box">
+		<ul>
+			<li><img src="theme/img/tag_ico.gif" id="tag_ico"  /></li>
+			<li><b>热门标签:</b></li>
+			{sta:foreach($tag_rs as $val)[loop]}
+			<li><a href="index.php?app=view&list&mod=tag&tag_id={echo:$val['id'];/}">{echo:$val['name'];/}</a></li>
+			{end:foreach/}
+		</ul>
+		<div class="clear"></div>
+	</div>
+<!--TAG标签结束-->

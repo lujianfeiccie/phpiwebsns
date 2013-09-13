@@ -1,0 +1,237 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{echo:$news_row['title'];/}-{echo:$webTitle;/}</title>
+<script type='text/javascript' src='../servtools/ajax_client/ajax.js'></script>
+<script type='text/javascript' src='../servtools/imgfix.js'></script>
+<link rel="stylesheet" type="text/css" href="theme/css/common.css"/>
+<link rel="stylesheet" type="text/css" href="theme/css/layout.css"/>
+<meta name="Description" content="{echo:$news_row['description'];/}" />
+<meta name="Keywords" content="{echo:$news_row['keywords'];/}" />
+<meta name="author" content="{echo:$news_row['user_name'];/}" />
+<meta name="robots" content="all" />
+<script type='text/javascript'>
+	function support(content){
+		if(content=='success'){
+			var obj_value=document.getElementById('sup_num').innerHTML;
+			document.getElementById('sup_num').innerHTML=parseInt(obj_value)+1;
+		}else{
+			alert(content);
+		}
+	}
+	
+	function against(content){
+		if(content=='success'){
+			var obj_value=document.getElementById('aga_num').innerHTML;
+			document.getElementById('aga_num').innerHTML=parseInt(obj_value)+1;
+		}else{
+			alert(content);
+		}
+	}
+	
+	function check_form(){
+		var user_name=document.getElementById('user_name').value;
+		var user_email=document.getElementById('user_email').value;
+		var text_cont=document.getElementById('text_cont').value;
+		if(user_name==''){
+			alert('昵称不能为空');return false;
+		}
+		if(user_email==''){
+			alert('邮箱不能为空');return false;
+		}
+		if(text_cont==''){
+			alert('内容不能为空');return false;
+		}
+	}
+</script>
+</head>
+<body>
+
+<!--head_start!-->
+{inc:require('header.php');/}
+<!--head_end!-->
+
+<div class="site_map">
+	当前位置:<a href="index.php?app=view&index">首页</a> &gt; {echo:$guide_str;/} &gt; 文章内容
+</div>
+
+<div class="main_body">
+	{sta:if(empty($news_row))[exc]}
+	<div class="error_box">
+		<img src="theme/img/error.png"  />指定的页面信息不存在，<a href="javascript:history.back(-1)">点击这里返回</a>。
+	</div>
+	{end:if/}
+	
+	{sta:if($news_row)[exc]}
+	<div class="main_left_list">
+		<div class="cont">
+			<div class="cont_title">
+				{echo:$news_row['channel_name'];/}
+			</div>
+			<div class="cont_body article">
+				<div class="article_top">
+				<h3>{echo:$news_row['title'];/}</h3>
+				作者：{echo:$news_row['user_name'];/} 日期：{echo:$news_row['addtime'];/}  阅读[{echo:$news_row['hits'];/}] 评论[{echo:$news_row['comments'];/}]
+				</div>
+            <!-- tags start -->
+            <div class="tags">
+                <span>标签：</span>
+				{sta:foreach($news_tag_rs as $val)[loop]}
+					<a href="index.php?app=view&list&mod=tag&tag_name={echo:urlencode($val);/}">{echo:$val;/}</a>
+				{end:foreach/}
+            </div>
+            <!-- tags end -->
+				<div id="textcontent">
+				{echo:$news_row['content'];/}
+				</div>
+			<p>（来源：{echo:$news_row['origin'];/}）</p>
+            
+			
+			{sta:if($diggType!=2)[exc]}
+			<div class="digg">
+				<table border="0" width="100%">
+					<tr class="number">
+						<td><span id='sup_num'>{echo:$news_row['support'];/}</span></td>
+						<td><span id='aga_num'>{echo:$news_row['against'];/}</span></td>
+					</tr>
+					<tr>
+						<td class="sup"><a href="index.php?app=act&content&attach&mod=support&id={echo:$news_row['id'];/}" name="ajax" target="support">支持</a></td>
+						<td class="opp"><a href="index.php?app=act&content&attach&mod=against&id={echo:$news_row['id'];/}" name="ajax" target="against">反对</a></td>
+					</tr>
+				</table>
+			</div>
+			{end:if/}
+			</div>
+		</div>
+		{sta:if($comment_row)[exc]}
+		<div class="cont" style="margin-top:10px;">
+			<div class="cont_title" id="com" name="com">
+				<span>共有{echo:$news_row['comments'];/}位网友发表了评论！</span>
+				网友评论
+			</div>
+			<div class="cont_body" id="comment">
+				<ul>
+					{sta:foreach($comment_row as $val)[loop]}
+					<li>
+						<span>IP：{echo:$val['user_ip'];/}</span>
+						<strong style="color:#900;">{echo:$val['user_name'];/}</strong>&nbsp; 发表于：{echo:$val['addtime'];/}<br/>
+						{echo:$val['content'];/}
+					</li>
+					{end:foreach/}
+					<li>{echo:page_show($isNull,$page_num,$page_total);/}</li>
+				</ul>
+			</div>
+		</div>
+		{end:if/}
+		{sta:if($comType!=2)[exc]}
+		<div class="cont" style="margin-top:10px;">
+			<div class="cont_title">我要评论</div>
+			<div class="cont_body">
+				<form action='index.php?app=act&comment&add&content_id={echo:$news_row['id'];/}' method='post' onsubmit="return check_form();">
+				<table width="100%" border="0" class="comm_input">
+					<tr>
+							<td width="50px" align="center">昵称：</td>
+							<td><input type="text" class="comm_text" name="user_name" id="user_name" /><span style="font-size:12px">*请输入您的昵称。</span></td>
+					</tr>
+					<tr>
+						<td width="50px" align="center">邮箱：</td>
+						<td><input type="text" class="comm_text" name="user_email" id="user_email" /><span style="font-size:12px">*请输入您的邮箱地址。</span></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td><textarea id="text_cont" name="content"></textarea></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td><input type="submit" value="提交评论" id="submit_btn"  /><span style="font-size:12px">网友评论仅代表网友本人的看法，并不表明本站同意同意其观点或证实其描述！</span></td>
+					</tr>
+				</table>
+				</form>
+			</div> 
+		</div>
+		{end:if/}
+
+	</div>
+	
+	<div class="main_right" id="log_list">
+    	<!-- 相关文章 start -->
+		<div class="cont">
+			<div class="cont_title">
+			<span><a href="index.php?app=view&list&mod=new">更多..</a></span>
+			相关文章
+			</div>
+			<div class="cont_body news">
+				<ul>
+					{sta:foreach($news_rs as $val)[loop]}
+					<li><a href="index.php?app=view&show&id={echo:$val['id'];/}"><nobr>{echo:sub_str($val['title'],30);/}</nobr></a></li>
+					{end:foreach/}
+				</ul>
+			</div>
+		</div>
+    	<!-- 相关文章 end -->
+	
+		<div class="cont">
+			<div class="cont_title">
+			<span><a href="index.php?app=view&list&mod=new">更多..</a></span>
+			最新文章
+			</div>
+			<div class="cont_body news">
+				<ul>
+					{sta:foreach($news_rs as $val)[loop]}
+					<li><a href="index.php?app=view&show&id={echo:$val['id'];/}"><nobr>{echo:sub_str($val['title'],30);/}</nobr></a></li>
+					{end:foreach/}
+				</ul>
+			</div>
+		</div>
+		
+		<div class="cont">
+			<div class="cont_title">
+			最新评论
+			</div>
+			<div class="cont_body news">
+				<ul>
+					{sta:foreach($comment_rs as $val)[loop]}
+					<li><a href="index.php?app=view&show&id={echo:$val['content_id'];/}"><nobr>{echo:sub_str($val['content'],30);/}</nobr></a></li>
+					{end:foreach/}
+				</ul>
+			</div>
+		</div> 
+		
+		<div class="cont">
+			<div class="cont_title">
+			<span><a href="index.php?app=view&list&mod=recom">更多..</a></span>
+			推荐文章
+			</div>
+			<div class="cont_body news">
+				<ul>
+					{sta:foreach($recom_rs as $val)[loop]}
+					<li><a href="index.php?app=view&show&id={echo:$val['id'];/}"><nobr>{echo:sub_str($val['title'],30);/}</nobr></a></li>
+					{end:foreach/}
+				</ul>
+			</div>
+		</div>
+	
+		<!--右侧广告-->
+		<div class="right_banner">
+			
+		</div>
+		<!--右侧广告-->
+	
+	</div>
+
+	<div class="clear"></div>
+	{end:if/}
+</div>
+<script type='text/javascript' src='../servtools/ajax_client/auto_ajax.js'></script>
+<script type='text/javascript'>
+	if({echo:$page_num;/}){
+		window.scrollTo(0,window.document.body.scrollHeight);
+	}
+</script>
+<!--head_start!-->
+{inc:require('footer.php');/}
+<!--head_end!-->
+
+</body>
+</html>

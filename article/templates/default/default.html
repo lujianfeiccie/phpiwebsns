@@ -1,0 +1,193 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{echo:$webTitle;/}</title>
+<meta name="Description" content="{echo:$webDesc;/}" />
+<meta name="Keywords" content="{echo:$webKeys;/}" />
+<meta name="author" content="{echo:$webAuthor;/}" />
+<meta name="robots" content="all" />
+<link rel="stylesheet" type="text/css" href="theme/css/common.css"/>
+<link rel="stylesheet" type="text/css" href="theme/css/layout.css"/>
+<script type='text/javascript' src='../servtools/ajax_client/ajax.js'></script>
+<script src="theme/js/slide.js" type="text/javascript"></script>
+</head>
+
+<body>
+<!--head_start!-->
+{inc:require('header.php');/}
+<!--head_end!-->
+
+<div class="main_body">
+	<div class="main_left">
+		<div class="slide_container" id="idTransformView" style="width:330px; margin-right:13px; float:left;">
+			  <ul class="slider" id="idSlider">
+				{sta:if(!empty($slide_rs))[exc]}
+				{sta:foreach($slide_rs as $val)[loop]}
+				<li><a href="{echo:$val['link'];/}" target="_blank"><img src="../{echo:$val['photo_src'];/}" alt="{echo:$val['title'];/}" /></a></li>
+				{end:foreach/}
+				{end:if/}
+				{sta:if(empty($slide_rs))[exc]}
+				{sta:$slide_rs=array(0);/}
+				<li><a href="#"><img src="theme/img/def.jpg" alt="聚易" /></a></li>
+				{end:if/}
+			 </ul>
+			 <ul class="slide_num" id="idNum">
+				 {sta:foreach($slide_rs as $key => $val)[loop]}
+				 <li>{echo:intval($key+1);/}</li>
+				 {end:foreach/}
+			 </ul>
+		</div>
+	  	<script type="text/javascript">
+			window.onload=slide(280);
+		</script>
+			<!--首页头条开始-->
+		<div class="top_list" style=" width:335px; overflow:hidden; float:left;">
+			<div class="cont_title" id="rec">
+				<span><a href="index.php?app=view&list&mod=recom">更多..</a></span>
+				今日推荐
+			</div>
+			{sta:$index_recom_num=0;/}
+			{sta:foreach($recom_rs as $val)[loop]}
+			{sta:if($index_recom_num>=2)[exc]}
+			{sta:break;/}
+			{end:if/}
+			<div class="rec_list">
+				<h3><a href="index.php?app=view&show&id={echo:$val['id'];/}"><nobr>{echo:sub_str($val['title'],30);/}</nobr></a></h3>
+				<p>{echo:$val['resume'];/}</p>
+				<a class="read_more" href="index.php?app=view&show&id={echo:$val['id'];/}">阅读全文..</a>
+			</div>
+			<hr />
+			{sta:$index_recom_num++;/}
+			{end:foreach/}
+			<!--首页头条结束-->
+     </div>
+     <div class="clear"></div>
+     </div>
+
+		<div class="main_right">
+			<!--最新文章开始-->
+			<div class="cont">
+				<div class="cont_title">
+				<span><a href="index.php?app=view&list&mod=new">更多..</a></span>
+				最新文章
+				</div>
+				<div class="cont_body" id="new_log">
+					<ul>
+						{sta:foreach($news_rs as $val)[loop]}
+						<li><a href="index.php?app=view&show&id={echo:$val['id'];/}"><nobr>{echo:sub_str($val['title'],20);/}</nobr></a></li>
+						{end:foreach/}
+					</ul>
+					<!--广告!-->
+					<a href="#"><img src="theme/img/banner_03.gif" width="235px" /></a>
+				</div>
+			</div>
+			<!--最新文章结束-->
+		</div>
+
+		<div class="clear"></div><!--清除幻灯片、首页头条、最新文章的浮动-->
+
+		</div>
+
+
+	<!--通栏广告 开始-->
+	<div class="main_body">
+		<a href="#"><img src="theme/img/bannera01.gif" width="960px"  height="90px" /></a>
+	</div>
+	<!--通栏广告 结束-->
+
+	<div class="main_body">
+    <div class="main_left" style="width:700px; float:left;">
+
+		{sta:foreach($show_rs as $val)[loop]}
+		{sta:$show_top_content=select_spell($ArticleTable['article_news'],'id,title,user_id,user_ico,thumb,hits,comments,user_name',"channel_id = $val[id] and status=1",'order_num','asc','getRow',1,"news/show/index/content_id/$val[id]",1);/}
+		{sta:$show_content=select_spell($ArticleTable['article_news'],'id,title',"channel_id = $val[id] and status=1",'order_num','asc','getRs',1,"news/list/all/index/content_id/$val[id]",'1,5');/}
+
+			<div class="cont">
+
+				<div class="cont_title">
+					<span><a href="index.php?app=view&list&id={echo:$val['id'];/}">更多..</a></span>
+					{echo:sub_str($val['name'],30);/}
+				</div>
+
+				<div class="cont_body">
+
+					<!--栏内顶部分类头条和作者头像 开始-->
+					{sta:if($show_top_content)[exc]}
+					<div class="log_list_top">
+						<table border="0" width="100%">
+							<tr>
+								<td width="30%" align="center">
+									<span class="list_top_pic">
+										<a href="index.php?app=view&show&id={echo:$show_top_content['id'];/}"><img src="../{echo:$show_top_content['thumb'] ? $show_top_content['thumb']:$show_top_content['user_ico'];/}" /></a>
+									</span>
+								</td>
+								<td valign="top">
+									<h5><a href="index.php?app=view&show&id={echo:$show_top_content['id'];/}">{echo:sub_str($show_top_content['title'],30);/}</a></h5>
+									<span>
+										作者：<a href="../home.php?h={echo:$show_top_content['user_id'];/}">{echo:$show_top_content['user_name'];/}</a>
+										阅读[{echo:$show_top_content['hits'];/}]
+										回复[{echo:$show_top_content['comments'];/}]
+									</span>
+								</td>
+							</tr>
+						</table>
+					</div>
+					<!--栏内顶部分类头条和作者头像 结束-->
+					{end:if/}
+					<ul class="log_list_1">
+						{sta:foreach($show_content as $val)[loop]}
+						<li><a href="index.php?app=view&show&id={echo:$val['id'];/}"><nobr>·{echo:sub_str($val['title'],30);/}</nobr></a></li>
+						{end:foreach/}
+					</ul>
+
+				</div>
+
+			</div>
+
+		{end:foreach/}
+        </div>
+
+	<div class="main_right" style="width:260px;float:right;">
+
+		<div class="cont">
+			<div class="cont_title">
+				<span><a href="index.php?app=view&list&mod=recom">更多..</a></span>
+				推荐文章
+			</div>
+			<div class="cont_body news">
+				<ul>
+					{sta:foreach($recom_rs as $val)[loop]}
+					<li><a href="index.php?app=view&show&id={echo:$val['id'];/}"><nobr>{echo:sub_str($val['title'],30);/}</nobr></a></li>
+					{end:foreach/}
+				</ul>
+			</div>
+		</div>
+
+		<div class="cont">
+			<div class="cont_title">
+				最新评论
+			</div>
+			<div class="cont_body news">
+				<ul>
+					{sta:foreach($comment_rs as $val)[loop]}
+					<li><a href="index.php?app=view&show&id={echo:$val['content_id'];/}"><nobr>{echo:sub_str($val['content'],30);/}</nobr></a></li>
+					{end:foreach/}
+				</ul>
+			</div>
+		</div>
+
+	</div>
+
+	<div class="clear"></div>
+
+	</div>
+
+	<script type='text/javascript' src='../servtools/ajax_client/auto_ajax.js'></script>
+
+<!--head_start!-->
+{inc:require('footer.php');/}
+<!--head_end!-->
+
+</body>
+</html>

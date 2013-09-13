@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title></title>
+<base href='{echo:$siteDomain;/}' />
+<link rel="stylesheet" type="text/css" href="skin/default/jooyea/css/iframe.css">
+<link rel="stylesheet" type="text/css" href="skin/default/jooyea/css/ask.css">
+<link rel="stylesheet" type="text/css" href="servtools/menu_pop/menu_pop.css">
+<script type='text/javascript' src='servtools/ajax_client/ajax.js'></script>
+<script type="text/javascript">parent.hiddenDiv();</script>
+</head>
+<body id="iframecontent" >
+{sta:if($is_self=='Y')[exc]}
+	<div class="create_button"><a href="modules.php?app=ask_edit">我要提问</a></div>
+{end:if/}
+<h2 class="app_ask">问吧</h2>
+{sta:if($is_self=='Y')[exc]}
+<div class="ask_bar">
+    <div class="ask_class" href="javascript:void(0);" onmouseover="document.getElementById('ask_classlist').style.display='';this.className = 'ask_class active'" onmouseout="document.getElementById('ask_classlist').style.display='none';this.className = 'ask_class'">咨询分类
+        <dl id="ask_classlist" style="display:none" onmouseover="this.style.display=''" onmouseout="this.style.display='none'">
+            {sta:foreach($ask_type_rs as $val)[loop]}
+                <dd><a href="modules.php?app=ask&mod={echo:$mod;/}&type={echo:$val['id'];/}">{echo:$val['name'];/}</a></dd>
+            {end:foreach/}
+            <dd class="clear"></dd>
+        </dl>
+    </div>
+		<ul>
+			<li><a {echo:$mod_unsolved;/} href="modules.php?app=ask" hidefocus="true">待解决问题</a></li>
+			<li><a {echo:$mod_solved;/} href="modules.php?app=ask&mod=solved" hidefocus="true">已解决问题</a></li>
+			<li><a {echo:$mod_reply;/} href="modules.php?app=ask&mod=reply" hidefocus="true">最新回复</a></li>
+			<li><a {echo:$mod_reward;/} href="modules.php?app=ask&mod=reward" hidefocus="true">高分问题</a></li>
+			<li><a {echo:$mod_mine;/} href="modules.php?app=ask&mod=mine" hidefocus="true">我的提问</a></li>
+			<li><a {echo:$mod_mine_reply;/} href="modules.php?app=ask&mod=mine_reply" hidefocus="true">我的回答</a></li>
+       </ul>
+</div>
+{end:if/}
+{sta:if(!empty($ask_rs))[exc]}
+
+    <div class="ask_listbox">
+        <dl>
+
+            <dd>
+             <table class="ask_table">
+                 <tr>
+                    <th class="l">标题</th><th>提问者</th><th>回答数</th><th>查看数</th><th>悬赏分</th><th>时间</th>
+                 </tr>
+                {sta:foreach($ask_rs as $val)[loop]}
+                <tr>
+                    <td class="l"><a href="modules.php?app=ask_show&id={echo:$val['ask_id'];/}">{echo:$val['title'];/}</a></td>
+                    <td><a href="home.php?h={echo:$val['user_id'];/}" target="_blank">{echo:$val['user_name'];/}</a></td>
+                    <td>{echo:$val['reply_num'];/}</td>
+                    <td>{echo:$val['view_num'];/}</td>
+                    <td class="title"><span class="money">&nbsp;&nbsp;&nbsp;</span>{echo:intval($val['reward']);/}</td>
+                    <td>{echo:$val['add_time'];/}</td>
+                </tr>
+                {end:foreach/}
+            </table>
+            </dd>
+        </dl>
+    </div>
+
+{end:if/}
+  {sta:page_show($isNull,$page_num,$page_total);/}
+  <div class="rs_box guide_info {echo:$content_data_none;/}">
+		对不起，没有找到相关问题！
+  </div>
+</div>
+</body>
+</html>

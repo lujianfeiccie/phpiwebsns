@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{echo:$webTitle;/}</title>
+<meta name="Description" content="<?php echo $webDesc;?>" />
+<meta name="Keywords" content="<?php echo $webKeys;?>" />
+<meta name="author" content="<?php echo $webAuthor;?>" />
+<meta name="robots" content="all" />
+<link rel="stylesheet" type="text/css" href="theme/css/common.css"/>
+<link rel="stylesheet" type="text/css" href="theme/css/layout.css"/>
+</head>
+
+<body id='cms_content'>
+	
+<!--head_start!-->
+{inc:require('header.php');/}
+<!--head_end!-->
+
+<div class="site_map">
+	当前位置:<a href="index.php?app=view&index">首页</a> &gt; {echo:$guide_str;/} &gt; 信息列表
+</div>
+<div class="main_body">
+	{sta:if($isNull==1)[exc]}
+	<div class="error_box">
+		<img src="theme/img/error.png"  />指定的页面信息不存在，<a href="javascript:history.back(-1)">点击这里返回</a>。
+	</div>
+	{end:if/}	
+	
+	{sta:if($isNull==0)[exc]}
+	<div class="main_left_list">
+	
+		<div class="cont">
+			<div class="cont_title">
+				{echo:$guide_str;/}
+			</div>
+			<div class="cont_body">
+				<ul>
+					{sta:foreach($result_rs as $val)[loop]}
+					<li class="log_li_1">
+						<span class="author"><img src="../{echo:$val['thumb'] ? $val['thumb']:$val['user_ico'];/}" /></span>
+						<span class="log_title">
+						<b><a href="index.php?app=view&show&id={echo:$val['id'];/}">{echo:$val['title'];/}</a></b><br />
+						作者：<a href="../home.php?h={echo:$val['user_id'];/}">{echo:$val['user_name'];/}</a>  日期：{echo:$val['addtime'];/}  
+						<font class="bottom_info">阅读[{echo:$val['hits'];/}] 评论[{echo:$val['comments'];/}]</font>
+						</span>
+						<div class="clear"></div>
+					</li>
+					{end:foreach/}
+					{sta:if($mod!='new')[exc]}
+					<li class="log_li_2">
+						{echo:page_show($isNull,$page_num,$page_total);/}
+					</li>
+					{end:if/}
+				</ul>
+			</div>
+		</div> 
+	
+	</div>
+	
+	<div class="main_right" id="log_list">
+		
+		{sta:if($child_rs)[exc]}
+		<div class="cont">
+			<div class="cont_title">
+			子频道
+			</div>
+			<div class="cont_body news">
+				<ul>
+					{sta:foreach($child_rs as $val)[loop]}
+					<li><a href="index.php?app=view&list&id={echo:$val['id'];/}"><nobr>{echo:$val['name'];/}</nobr></a></li>
+					{end:foreach/}
+				</ul>
+			</div>
+		</div>
+		{end:if/}
+	
+		<div class="cont">
+			<div class="cont_title">
+			<span><a href="index.php?app=view&list&mod=new">更多..</a></span>
+			最新文章
+			</div>
+			<div class="cont_body news">
+				<ul>
+					{sta:foreach($news_rs as $val)[loop]}
+					<li><a href="index.php?app=view&show&id={echo:$val['id'];/}"><nobr>{echo:sub_str($val['title'],30);/}</nobr></a></li>
+					{end:foreach/}
+				</ul>
+			</div>
+		</div> 
+	
+		<div class="cont">
+			<div class="cont_title">
+			最新评论
+			</div>
+			<div class="cont_body news">
+				<ul>
+					{sta:foreach($comment_rs as $val)[loop]}
+					<li><a href="index.php?app=view&show&id={echo:$val['content_id'];/}"><nobr>{echo:sub_str($val['content'],30);/}</nobr></a></li>
+					{end:foreach/}
+				</ul>
+			</div>
+		</div> 
+	
+		<div class="cont">
+			<div class="cont_title">
+				<span><a href="index.php?app=view&list&mod=recom">更多..</a></span>
+				推荐文章
+			</div>
+			<div class="cont_body news">
+				<ul>
+					{sta:foreach($recom_rs as $val)[loop]}
+					<li><a href="index.php?app=view&show&id={echo:$val['id'];/}"><nobr>{echo:sub_str($val['title'],30);/}</nobr></a></li>
+					{end:foreach/}
+				</ul>
+			</div>
+		</div>
+		
+		<div class="right_banner">
+			<a href="#"><img src="images/expo24060.jpg" /></a>
+		</div>
+		
+	</div>
+	
+	<div class="clear"></div>
+	{end:if/}
+</div>
+
+<!--head_start!-->
+{inc:require('footer.php');/}
+<!--head_end!-->
+
+</body>
+</html>

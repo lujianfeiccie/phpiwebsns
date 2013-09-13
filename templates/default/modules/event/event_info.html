@@ -1,0 +1,225 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title></title>
+<link rel="stylesheet" type="text/css" href="skin/default/jooyea/css/iframe.css">
+<link type="text/css" rel="stylesheet" href="servtools/calendar/css/calendar.css" />
+<SCRIPT language=JavaScript src="skin/default/js/jooyea.js"></SCRIPT>
+<script src="servtools/area.js" type="text/javascript"></script>
+<SCRIPT language=JavaScript src="servtools/kindeditor/kindeditor.js"></SCRIPT>
+<script type='text/javascript'>parent.hiddenDiv();</script>
+</head>
+<body id="iframecontent">
+	<div class="create_button"><a href="javascript:history.go(-1)">{echo:lp{ef_back};/}</a></div>
+  <h2 class="app_event">{echo:lp{ef_activity};/}</h2>
+  <div class="tabs">
+    <ul class="menu">
+    	{sta:if($event_id)[exc]}
+      <li class="active"><a href="modules.php?app=event_info&event_id={echo:$event_id;/}" hidefocus="true">{echo:lp{ef_update_activity};/}</a></li>
+      <li><a href="modules.php?app=event_member_manager&event_id={echo:$event_id;/}" hidefocus="true">{echo:lp{ef_member_management};/}</a></li>
+			<li><a href="modules.php?app=event_upload_photo&event_id={echo:$event_id;/}" hidefocus="true">{echo:lp{ef_upload_photo};/}</a></li>
+    	{end:if/}
+    	{sta:if(!$event_id)[exc]}
+    	<li class="active"><a href="modules.php?app=event_info" hidefocus="true">{echo:lp{ef_launch_activity};/}</a></li>
+    	{end:if/}
+    </ul>
+  </div>
+	<form action="{echo:$action;/}" method="post" enctype="multipart/form-data" onsubmit="return validate(this);">
+	    <table class="form_table">
+	    	<tr>
+	        	<th>{echo:lp{ef_activity_name};/}：</th>
+	          <td><input name="title" type="text" class="med-text" value="{echo:$event_info['title'];/}" /></td>
+	      </tr>
+        <tr>
+        	<th>{echo:lp{ef_activity_city};/}：</th>
+          <td>
+              <select name='province' id="s1"><option>{echo:lp{ef_please_select};/}...</option></select>
+              <select name='city' id="s2"><option>{echo:lp{ef_please_select};/}...</option></select>
+              <script type="text/javascript">
+				setup();
+				document.getElementById('s1').value='{echo:$event_info["province"];/}';
+				change(1);
+				document.getElementById('s2').value='{echo:$event_info["city"];/}';
+              </script>
+          </td>
+        </tr>
+        <tr>
+        	<th>{echo:lp{ef_activity_location};/}：</th>
+            <td><input type="text" name="location" class="med-text" value="{echo:$event_info['location'];/}" /></td>
+        </tr>
+        <tr>
+        	<th>{echo:lp{ef_activity_time};/}：</th>
+            <td>
+	            <input type="text" id="start_time" name="start_time" readonly="readonly" class="small-text" value="{echo:$event_info['start_time'];/}" />
+	             {echo:lp{ef_to};/}
+	            <input type="text" id="end_time" name="end_time" readonly="readonly" class="small-text" value="{echo:$event_info['end_time'];/}" />
+            </td>
+        </tr>
+        <tr>
+        	<th>{echo:lp{ef_closing};/}：</th>
+            <td><input type="text" id="deadline" name="deadline" readonly="readonly" class="small-text" value="{echo:$event_info['deadline'];/}" /></td>
+        </tr>
+        <tr>
+        	<th>{echo:lp{ef_activity_sort};/}：</th>
+            <td>{echo:$event_type;/}</td>
+        </tr>
+        <tr>
+        	<th></th>
+            <td style="line-height:1.5">
+            	<textarea name="detail" style='width:560px;height:400px;_width:560px;' id="detail" class="textarea" >{echo:$event_info['detail'];/}</textarea>
+            </td>
+        </tr>
+        <tr>
+        	<th>{echo:lp{ef_posters};/}：</th>
+            <td><input type="file" name='attach[]' class="med-text" /></td>
+        </tr>
+        <tr>
+        	<th>{echo:lp{ef_activity_number};/}：</th>
+            <td><input type="text" name="limit_num" class="small-text" value="{echo:$event_info['limit_num'];/}" /> {echo:lp{ef_activity_number_ef_limit};/} </td>
+        </tr>
+        <tr>
+        	<th>{echo:lp{ef_activity_privacy};/}：</th>
+            <td>
+                <select name="public" id="public">
+	                <option value="2">{echo:lp{ef_privacy_publicity};/}</option>
+	                <option value="1">{echo:lp{ef_half_publicity_activity};/}</option>
+	                <option value="0">{echo:lp{ef_privacy_activity};/}</option>
+                </select>
+				<script type="text/javascript">document.getElementById('public').value='{echo:$event_info["public"];/}';</script>
+            </td>
+        </tr>
+        <tr>
+        	<th>{echo:lp{ef_activity_options};/}：</th>
+            <td>
+                <input name="allow_invite" id="allow_invite" value="1" type="checkbox" {sta:if($event_info['allow_invite'])[exc]} checked="checked" {end:if/}/>
+                <label for="allow_invite">{echo:lp{ef_allowed_invite_friends};/}</label><br>
+                <input name="allow_pic" id="allow_pic" value="1" type="checkbox" {sta:if($event_info['allow_pic'])[exc]} checked="checked" {end:if/}/>
+                <label for="allow_pic">{echo:lp{ef_allows_sharing_photos};/}</label><br>
+                <input name="allow_post" id="allow_post" value="1" type="checkbox" {sta:if($event_info['allow_post'])[exc]} checked="checked" {end:if/}/>
+                <label for="allow_post">{echo:lp{ef_allowed_issue_message};/}</label><br>
+                <input name="verify" id="verify" value="1" type="checkbox" {sta:if($event_info['verify'])[exc]} checked="checked" {end:if/}/>
+                <label for="verify">{echo:lp{ef_participation_requires_approval};/}</label><br>
+                <input name="allow_fellow" id="allow_fellow" value="1" type="checkbox" {sta:if($event_info['allow_fellow'])[exc]} checked="checked" {end:if/}/>
+                <label for="allow_fellow">{echo:lp{ef_allowed_bring_friends};/}</label>
+            </td>
+        </tr>
+        <tr>
+        	<th valign="top">{echo:lp{ef_reg_info};/}：</th>
+            <td><textarea name="template" class="textarea" >{echo:$event_info['template'];/}</textarea></td>
+        </tr>
+        <tr>
+        	<td></td>
+        	<td>
+            	<input type="hidden" name="act" value="{echo:$act;/}" />
+              <input type="hidden" name="event_id" value="{echo:$event_info['event_id'];/}" />
+            	<input type="submit" class="regular-btn" value="{echo:lp{ef_submit};/}" />
+            </td>
+        </tr>
+	    </table>
+	</form>
+
+<script src="servtools/calendar/js/calendar.js" type="text/javascript" language="javascript"></script>
+<script src="servtools/calendar/js/lang/cn.js" type="text/javascript" language="javascript"></script>
+<script type="text/javascript" language="javascript">
+calendar('start_time');
+calendar('end_time');
+calendar('deadline');
+function calendar(obj)
+{
+	new Calendar({inputField:obj,trigger:obj,dateFormat:"%Y-%m-%d %H:%M",titleFormat:"%Y %B",showTime: 24,onSelect:function(){var date = Calendar.intToDate(this.selection.get());this.hide();}});
+}
+
+function validate(formObj){
+	var myDate = new Date();
+	var year = myDate.getFullYear();
+	var month = myDate.getMonth()+1;	month = month<10 ? "0"+month : month;
+	var date = myDate.getDate();	date = date<10 ? "0"+date : date;
+	var hours = myDate.getHours();	hours = hours<10 ? "0"+hours : hours;
+	var minutes = myDate.getMinutes();	minutes = minutes<10 ? "0"+minutes : minutes;
+	var current_time = year+'-'+month+'-'+date+' '+hours+':'+minutes;
+
+	if(!formObj.title.value){
+		parent.Dialog.alert("{echo:lp{ef_fill_in_activity_name};/}");
+		return false;
+	}
+	if(formObj.title.value.length>=80){
+		parent.Dialog.alert("{echo:lp{ef_activity_name_overrun};/}");
+		return false;
+	}
+	if(!formObj.province.value || !formObj.city.value){
+		parent.Dialog.alert("{echo:lp{ef_select_activity_city};/}");
+		return false;
+	}
+	if(!formObj.location.value){
+		parent.Dialog.alert("{echo:lp{ef_fill_in_activity_location};/}");
+		return false;
+	}
+	if(!formObj.location.value.length>=80){
+		parent.Dialog.alert("{echo:lp{ef_activity_location_overrun};/}");
+		return false;
+	}
+	var start_time = formObj.start_time.value;
+	var end_time = formObj.end_time.value;
+	if(!start_time || !end_time){
+		parent.Dialog.alert("{echo:lp{ef_select_start_end_time};/}");
+		return false;
+	}
+
+	if(start_time > end_time){
+		parent.Dialog.alert("{echo:lp{ef_end_after_start};/}");
+		return false;
+	}
+	var deadline = formObj.deadline.value;
+	if(!deadline){
+		parent.Dialog.alert("{echo:lp{ef_select_reg_deadline};/}");
+		return false;
+	}
+	if(deadline > end_time){
+		parent.Dialog.alert("{echo:lp{ef_end_after_deadline};/}");
+		return false;
+	}
+	if(deadline < start_time){
+		parent.Dialog.alert("{echo:lp{ef_deadline_after_start};/}");
+		return false;
+	}
+	if(!formObj.type_id.value){
+		parent.Dialog.alert("{echo:lp{ef_select_activity_sort};/}");
+		return false;
+	}
+	if(!formObj.template.value.length>=250){
+		parent.Dialog.alert("{echo:lp{ef_reg_info_overrun};/}");
+		return false;
+	}
+}
+
+var event_type_tem = new Array();
+{sta:foreach($event_sort_rs as $rs)[loop]}
+	event_type_tem[{echo:$rs['type_id'];/}] = "{echo:$rs['template'];/}";
+{end:foreach/}
+var event_type_id = document.getElementById("type_id");
+
+event_type_id.onchange=function(){
+	var content = window.frames['KINDEDITORIFRAME'].document.getElementById("KINDEDITORBODY");
+	var content_html = content.innerHTML;
+	var event_type_value=event_type_id.value;
+	if(event_type_value){
+		if(content_html){
+			if(confirm("{echo:lp{ef_whether_load};/}")){
+				content.innerHTML = event_type_tem[event_type_value]+content_html;
+			}
+		}else
+			content.innerHTML = event_type_tem[event_type_value];
+	}
+}
+</script>
+
+<script type="text/javascript">
+	KE.show({
+		id:'detail',
+		resizeMode:0
+	});
+</script>
+
+</body>
+</html>

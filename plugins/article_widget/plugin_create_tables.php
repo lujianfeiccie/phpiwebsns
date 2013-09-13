@@ -1,0 +1,1 @@
+isns_article_admin;isns_article_channel;isns_article_slide;isns_article_ads;isns_article_resource;isns_article_group;isns_article_comment;isns_article_news;isns_article_tag;isns_article_tag_relation

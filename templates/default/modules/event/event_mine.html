@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title></title>
+<SCRIPT language=JavaScript src="servtools/ajax_client/ajax.js"></SCRIPT>
+<link rel="stylesheet" type="text/css" href="skin/default/jooyea/css/iframe.css">
+<script language="JavaScript">
+function event_exit(event_id){
+	var event_add=new Ajax();
+	event_add.getInfo("do.php","get","app","act=event_exit&event_id="+event_id,function(c){if(c!="") parent.Dialog.alert(c);location.href="modules.php?app=event"}); 
+}
+function event_follow_cancel(event_id){
+	var event_follow=new Ajax();
+	event_follow.getInfo("do.php","get","app","act=event_follow_cancel&event_id="+event_id,function(c){if(c!="") parent.Dialog.alert(c);location.href="modules.php?app=event"}); 
+}
+</script>
+</head>
+<body id="iframecontent">
+	{sta:if($is_self=='Y')[exc]}
+	<div class="create_button"><a href="modules.php?app=event_search">{echo:lp{ef_search_activity};/}</a></div>
+	<div class="create_button"><a href="modules.php?app=event_info">{echo:lp{ef_launch_activity};/}</a></div>
+	{end:if/}
+  <h2 class="app_event">{echo:$str_title;/}</h2>
+  {sta:if($is_self=='Y')[exc]}
+  <div class="tabs">
+    <ul class="menu">
+      <li><a href="modules.php?app=event_list&mod=all" hidefocus="true">{echo:lp{ef_all_activity};/}</a></li>
+      <li><a href="modules.php?app=event_list&mod=recom" hidefocus="true">{echo:lp{ef_recommended_activity};/}</a></li>
+      <li><a href="modules.php?app=event_list&mod=city" hidefocus="true">{echo:lp{ef_same_city_activity};/}</a></li>
+      <li class='active'><a href="modules.php?app=event" hidefocus="true">{echo:lp{ef_my_activity};/}</a></li>
+    </ul>
+  </div>
+	{end:if/}
+	{sta:foreach($event_rs as $rs)[loop]}
+		<div class="group_box" onmouseover="this.className = 'group_box_active';" onmouseout="this.className='group_box';">
+			<div class="group_box_content">
+        <div class="group_control">
+				{sta:if($is_self=='Y')[exc]}
+					{sta:$action=show_action($rs['user_id'],$ses_uid,$rs['event_id']);/}
+					<a class="{echo:$action['manage'];/}" href="modules.php?app=event_info&event_id={echo:$rs['event_id'];/}">{echo:lp{ef_activity_management};/}</a>
+					<a class="{echo:$action['drop'];/}" href="do.php?act=event_drop&event_id={echo:$rs['event_id'];/}" onclick="return confirm('{echo:lp{ef_confirm_cancel};/}');">{echo:lp{ef_cancel_activity};/}</a>
+					<a class="{echo:$action['exit'];/}" href="javascript:void(0);" onclick="if(confirm('{echo:lp{ef_confirm_exit};/}')){event_exit({echo:$rs['event_id'];/})};">{echo:lp{ef_exit_activity};/}</a>
+					<a class="{echo:$action['follow'];/}" href="javascript:void(0);" onclick="if(confirm('{echo:lp{ef_confirm_cancel};/}')){event_follow_cancel({echo:$rs['event_id'];/})};">{echo:lp{ef_cancel_concern};/}</a>
+        {end:if/}
+				</div>
+				<div class="group_photo">
+					<a href='modules.php?app=event_space&event_id={echo:$rs["event_id"];/}&user_id={echo:$url_uid;/}'><img src="{echo:$rs['poster'];/}" width='100px' height='100px' alt="{echo:$rs['title'];/}" onerror="parent.pic_error(this)" /></a>
+				</div>
+				<dl class="group_list">
+					<dt><a href='modules.php?app=event_space&event_id={echo:$rs["event_id"];/}&user_id={echo:$url_uid;/}'>{echo:filt_word($rs['title']);/}</a></dt>
+					<dd>{echo:lp{ef_activity_time};/}：{echo:date('m月d日 H:i',$rs['start_time']);/}-{echo:date('m月d日 H:i',$rs['end_time']);/}</dd>
+					{sta:if($is_self=='Y')[exc]}
+					<dd>{echo:lp{ef_i_is};/}：{echo:$action['status'];/}</dd>
+					{end:if/}
+					<dd>{echo:$rs['view_num'];/} {echo:lp{ef_people_select};/} {echo:$rs['member_num'];/} {echo:lp{ef_people_participate};/} {echo:$rs['follow_num'];/} {echo:lp{ef_people_attention};/}</dd>
+				</dl>
+			</div>
+		</div>
+	{end:foreach/}
+  <div class="clear"></div>
+	{sta:page_show($isNull,$page_num,$page_total);/}
+	
+	<div class="guide_info {echo:$list_none;/}">
+		{echo:lp{ef_no_activity_you_can};/}
+		{sta:if($is_self=='Y')[exc]}
+		<a href="modules.php?app=event_info">{echo:lp{ef_initiate_activity};/}</a>
+		{end:if/}
+	</div>
+</body>
+</html>

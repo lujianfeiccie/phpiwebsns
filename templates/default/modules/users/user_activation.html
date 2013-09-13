@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title></title>
+<base href='{echo:$siteDomain;/}' />
+<link rel="stylesheet" href="skin/default/jooyea/css/layout.css" />
+</head>
+<body id="iframecontent">     	
+	{inc:require('uiparts/guestheader.php');/}	
+		<div class="mail_sess_box">
+		   <div class="mail_sess">
+			{sta:if($code_mark == "time")[exc]}
+			<p>激活邮件已过期，<a href='do.php?act=user_activation&user_email={echo:$user_email;/}'>点击重新发送</a></p>
+			{end:if/}
+			{sta:if($code_mark == "toEmail")[exc]}
+			<p>请到您的邮箱中激活您的账号，<a href='do.php?act=user_activation&user_email={echo:$user_email;/}'>重新发送激活邮件</a></p>
+			{end:if/}
+			{sta:if($code_mark == "ok")[exc]}
+			<p>恭喜您，激活成功</p>
+			{end:if/}
+			{sta:if($code_mark == "not_match")[exc]}
+			<p>激活码不正确或已失效，<a href='do.php?act=user_activation&user_email={echo:$user_email;/}'>点击重新获取激活码</a></p>
+			{end:if/}
+	    </div>   
+	</div>
+{inc:require('uiparts/footor.php');/}
+</body>
+</html>

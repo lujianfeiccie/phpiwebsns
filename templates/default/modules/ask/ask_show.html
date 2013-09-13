@@ -1,0 +1,234 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title></title>
+<base href='{echo:$siteDomain;/}' />
+<link rel="stylesheet" type="text/css" href="skin/default/jooyea/css/iframe.css">
+<link rel="stylesheet" type="text/css" href="skin/default/jooyea/css/ask.css">
+<script type='text/javascript' src="skin/default/js/jooyea.js"></script>
+<script type="text/javascript" src="servtools/imgfix.js"></script>
+<SCRIPT language=JavaScript src="servtools/ajax_client/ajax.js"></SCRIPT>
+<script type='text/javascript'>
+
+$=function (id){
+	return document.getElementById(id);
+}
+
+//添加图片
+function addImage(imgSrc){
+	$('reply_input').value+='[img]'+imgSrc+'[/img]';
+}
+
+//回答问题表单校验
+function restore_reply(){
+	var r_content=$('reply_input').value;
+
+	if(trim(r_content)==''){
+		parent.Dialog.alert('请填写回答内容');
+		return false;
+	}
+	return true;
+}
+
+//显示隐藏 修改答案表单
+function edit_reply(show){
+	$('edit_reply_div').style.display=show;
+}
+
+//采纳为答案
+function set_answer(ask_id,reply_id,user_id){
+	var ajax_answer=new Ajax();
+	ajax_answer.getInfo("do.php","GET","app","act=ask_set_answer&ask_id="+ask_id+"&reply_id="+reply_id+"&user_id="+user_id,function(c){if(c=='success'){location.href="modules.php?app=ask_show&id="+ask_id;}else{parent.Dialog.alert(c);}});
+}
+
+parent.hiddenDiv();
+</script>
+</head>
+<body id="iframecontent">
+	{sta:if($is_self=='Y')[exc]}
+    	<div class="create_button"><a href="modules.php?app=ask">待解决问题</a></div>
+	{end:if/}
+    <h2 id="page_title" class="app_ask">问吧</h2>
+	{sta:if($is_show)[exc]}
+    <div class="answer_box normal">
+        <h3>{echo:$status=='1'?'已解决':'待解决';/}问题</h3>
+    	<div class="answer_content">
+            <h4>{echo:filt_word($ask_row["title"]);/}</h4>
+            <div class="question_class"><span class="money">&nbsp;&nbsp;&nbsp;</span><a href="javascript:;">悬赏分:{echo:$ask_row['reward'];/}</a>&nbsp;&nbsp;&nbsp;类别：<a href="modules.php?app=ask&type={echo:$ask_row['type_id'];/}">{echo:$ask_row['type_name'];/}</a></div>
+			<p>{echo:filt_word($ask_row['detail']);/}</p>
+            
+            {sta:if($ask_row['replenish'])[exc]}
+            <p class="replenish"><span>问题补充：</span>{echo:filt_word($ask_row['replenish']);/}</p>
+            {end:if/}
+            
+            <div class="answer_info">
+                <div class="answer_time">
+
+                    {sta:if($is_asker==1 && $status==0)[exc]}
+                    <span class="log_edit_link">
+                        <a class="red" href="modules.php?app=ask_edit&id={echo:$ask_row['ask_id'];/}">编辑</a>
+                    </span>
+                    {end:if/}
+
+                    <span>提问者：<a class="red" href="home.php?h={echo:$ask_row['user_id'];/}" target="_blank">{echo:$ask_row['user_name'];/}</a></span>
+                    回答：<span id="reply_num">{echo:$ask_row['reply_num'];/}</span>
+                    <span>提问时间：{echo:$ask_row['add_time'];/}</span>
+                    <span>{echo:$status=='1'?'解决时间：'.$ask_row['solved_time']:'';/}</span>
+               </div>
+           </div>
+                <!--评论控制显示!-->
+                <dd class="log_list_comment"></dd>
+            </dl>
+        </div>
+    </div>
+
+	<!--满意答案开始-->
+	{sta:if(!empty($answer_row))[exc]}
+	<div class="answer_box sloved">
+    	<div class="answer_content">
+        	<h4>满意答案：</h4>
+            <p>{echo:filt_word(get_face($answer_row['content']));/}</p>
+            <div class="answer_info">
+                <div class="answer_time">
+                    <a class="red" href="home.php?h={echo:$answer_row['user_id'];/}" target="_blank">{echo:$answer_row['user_name'];/}</a>
+                    <label>{echo:$answer_row['add_time'];/}</label>
+                </div>
+            	<div class="answer_user">
+                	<a class="red" href="home.php?h={echo:$answer_row['user_id'];/}" target="_blank" class="figure"><img src="{echo:$answer_row['user_ico'];/}" /></a>
+                </div>
+            </div>
+        </div>
+	</div>
+	{end:if/}
+	<!--满意答案结束-->
+
+	<!--其他答案开始-->
+	{sta:if(!empty($reply_rs))[exc]}
+	<div class="answer_box normal">
+        <h3>{echo:$status==0?'答案':'其它答案';/}：</h3>
+        <div id='show_reply' class="answer_content">
+
+			<!--回答列表开始-->
+			{sta:foreach($reply_rs as $rs)[loop]}
+			<p id="reply_content_{echo:$rs['reply_id'];/}">{echo:filt_word(get_face($rs['content']));/}</p>
+			<div class="answer_info clearfix">
+
+				<div class="answer_time">
+				  <a class="red" href="home.php?h={echo:$rs['user_id'];/}" target="_blank">{echo:$rs['user_name'];/}</a>
+				  <span>{echo:$rs['add_time'];/}</span>
+				</div>
+
+				<div class="answer_user">
+					<a class="red"  href="home.php?h={echo:$rs['user_id'];/}" target="_blank" class="figure"><img src="{echo:$rs['user_ico'];/}" /></a>
+				</div>
+
+				<div class="answer_operate">
+					{sta:if($status=='0')[exc]}
+						<!--如果是登陆用户的答案-->
+						{sta:if($ses_uid==$rs['user_id'])[exc]}
+							{sta:$is_reply=1;/}
+							<span class="log_edit_link">
+							<a href="javascript:void(0);" onclick="edit_reply('block');">修改答案</a></span>
+						{end:if/}
+
+						<!--如果是提问者-->
+						{sta:if($is_asker==1)[exc]}
+							<span><a href="javascript:void(0);" onclick="set_answer({echo:$ask_id;/},{echo:$rs['reply_id'];/},{echo:$rs['user_id'];/})">采纳为答案</a></span>
+						{end:if/}
+
+					{end:if/}
+				</div>
+				<div class="clear"></div>
+				<!--修改答案表单开始-->
+
+				{sta:if($ses_uid==$rs['user_id'])[exc]}
+				<div class="reply" id="edit_reply_div" style="display:none">
+				<form action='do.php?act=ask_reply_edit' name="myform" method='post' onsubmit="return restore_reply();">
+					<table width="97%" cellspacing="0" cellpadding="0" border="0">
+						<tbody>
+						<tr valign="top">
+                        	<td width="20px" class="f14">&nbsp;</td>
+							<td style="position: relative;">
+							<textarea type="text" maxlength="150" id="reply_input" name="CONTENT" style="height:80px">{echo:$rs['content'];/}</textarea>
+						   <iframe width="100%" height=50   allowTransparency="true" scrolling=no src='modules.php?app=upload_form' frameborder=0></iframe>
+							</td>
+						</tr>
+						</tbody>
+					</table>
+					<table cellspacing="0" cellpadding="0" border="0" id="replay_submit_panel">
+						<tbody>
+							<tr>
+							<td width="20px" class="f14">&nbsp;</td>
+							<td>
+							<input class="regular-btn" type="submit" name="reply_button" value="确定" />
+							<input class="regular-btn" type="button" onclick="edit_reply('none');" value="取消" />
+							</td>
+							</tr>
+						</tbody>
+					</table>
+					<input type="hidden" name="reply_id" value="{echo:$rs['reply_id'];/}" />
+					<input type="hidden" name="user_id" value="{echo:$rs['user_id'];/}" />
+				</form>
+			</div>
+			{end:if/}
+			<!--修改答案表单结束-->
+
+
+			</div>
+			<div class="line"></div>
+			{end:foreach/}
+			<!--回答列表结束-->
+
+        </div>
+	</div>
+	{end:if/}
+	<!--其他答案结束-->
+
+	<!--回答表单开始 显示条件：已登录 未解决 不是提问者 未回答过-->
+	{sta:if($ses_uid && $status=='0' && $is_asker==0 && $is_reply==0)[exc]}
+	<div class="answer_box normal">
+    	<div class="answer_content">
+			<div class="reply">
+				<form action='do.php?act=ask_reply_add' name="form1" method='post' onsubmit="return restore_reply();">
+					<table width="97%" cellspacing="0" cellpadding="0" border="0">
+						<tbody>
+						<tr valign="top">
+							<td width="80px" class="f14">我来回答：</td>
+							<td style="position: relative;">
+							<textarea type="text" maxlength="150" id="reply_input" name="CONTENT" style="height:80px"></textarea>
+						   <iframe width="100%" height=50   allowTransparency="true" scrolling=no src='modules.php?app=upload_form' frameborder=0></iframe>
+							</td>
+						</tr>
+						</tbody>
+					</table>
+					<table cellspacing="0" cellpadding="0" border="0" id="replay_submit_panel">
+						<tbody>
+							<tr>
+							<td width="80px" class="f14">&nbsp;</td>
+							<td>
+							<input class="regular-btn" type="submit" name="reply_button" value="回答" /> 回答被采纳则获得悬赏分
+							</td>
+							</tr>
+						</tbody>
+					</table>
+					<input type="hidden" name="holder_id" value="{echo:$ask_row['user_id'];/}" />
+					<input type="hidden" name="ask_id" value="{echo:$ask_row['ask_id'];/}" />
+				</form>
+			</div>
+        </div>
+	</div>
+	{end:if/}
+	<!--回答表结束-->
+
+	</div>
+	</div>
+	{end:if/}
+
+	<!-- face begin -->
+	<div id="face_list_menu" class="emBg" style="display:none;z-index:100;"></div>
+	<!-- face end -->
+
+	<div class="guide_info {echo:$content_data_none;/}">没有找到该问题或问题已被删除！</div>
+</body>
+</html>

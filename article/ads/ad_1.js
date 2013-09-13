@@ -1,0 +1,1 @@
+window.document.write("<a href=\'http://cx\' target=\'_blank\'><embed width=\'0\' height=\'0\' wmode=\'transparent\' allowscriptaccess=\'always\' quality=\'high\' src=\'http://localhost/iwebsns1.1.0/uploadfiles/cms/2010/11/18/2010111811290526.swf\' type=\'application/x-shockwave-flash\' title=\'cx\'></embed></a>")

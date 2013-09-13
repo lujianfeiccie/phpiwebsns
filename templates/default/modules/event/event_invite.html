@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title></title>
+<base href='{echo:$siteDomain;/}' />
+<link rel="stylesheet" type="text/css" href="skin/default/jooyea/css/iframe.css">
+</head>
+<body id="iframecontent">
+<div class="create_button"><a href="javascript:window.history.go(-1)">{echo:lp{ef_back};/}</a></div>
+<h2 class="app_event">{echo:lp{ef_activity};/}</h2>
+<div class="tabs">
+  <ul class="menu">
+    <li class="active"><a href="modules.php?app=event_invite&event_id={echo:$event_id;/}" hidefocus="true">{echo:lp{ef_invite_friends};/}</a></li>
+  </ul>
+</div>
+{sta:if($isNull==0)[exc]}
+	<div class="rs_head">{echo:lp{ef_join_not_invite_friends};/}</div>
+	<form action="do.php?act=event_invite" name="form" method="post">
+		<input type="hidden" name="event_id" value="{echo:$event_id;/}" />
+	{sta:foreach($my_pals_rs as $rs)[loop]}
+			<div class="group_user_list">
+				<a class="avatar" href="home.php?h={echo:$rs['pals_id'];/}" target="_blank">
+					<img src="{echo:$rs['pals_ico'];/}" onerror="parent.pic_error(this)" width="50px" height="50px" title="{echo:$rs['pals_name'];/}" alt="{echo:$rs['pals_name'];/}" />
+				</a>
+				<div><a href="home.php?h={echo:$rs['pals_id'];/}" target="_blank">
+						{echo:sub_str($rs['pals_name'],5,true);/}
+				</a></div>
+				<div>
+				{sta:if($rs['to_user_id'] || $rs['user_id'])[exc]}
+					{echo:lp{ef_invited};/}
+				{end:if/}
+				{sta:if(!$rs['to_user_id'] && !$rs['user_id'])[exc]}
+					<input type="checkbox" name="pals_id[]" value="{echo:$rs['pals_id'];/}" />{echo:lp{ef_selected};/}
+					<input type="hidden" name="pals_name[]" value="{echo:$rs['pals_name'];/}" />
+				{end:if/}
+				</div>
+			</div>
+	{end:foreach/}
+    <div class="clear"></div>
+		<input type="submit" name="submit" value="{echo:lp{ef_invite};/}" class="regular-btn" />
+	</form>
+<!--{echo:page_show($isNull,$page_num,$page_total);/}!-->
+{end:if/}
+
+<div class="guide_info {echo:$list_none;/}">
+	{echo:$no_event;/}
+</div>
+</body>
+</html>

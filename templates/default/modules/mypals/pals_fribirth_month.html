@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title></title>
+<base href='{echo:$siteDomain;/}' />
+<link rel="stylesheet" type="text/css" href="skin/default/jooyea/css/iframe.css">
+<script type='text/javascript' src='servtools/ajax_client/ajax.js'></script>
+<script type="text/javascript">parent.hiddenDiv();</script>
+<script type="text/javascript">
+	function changeStyle(obj,p_id){
+		obj.className = 'hover';
+	}
+	function recoverStyle(obj,p_id){
+		obj.className = '';
+	}
+</script>
+</head>
+<body id="iframecontent">
+  <div class="create_button"><a href="modules.php?app=mypals_search">{echo:lp{mp_add};/}</a></div>
+  <h2 class="app_friend">{echo:lp{mp_mypals};/}</h2>
+  <div class="tabs">
+    <ul class="menu">
+      <li class="active"><a href="javascript:void(0)" title="好友生日">好友生日</a></li>
+      <li><a href="modules.php?app=mypals" title="{echo:lp{mp_list};/}">{echo:lp{mp_list};/}</a></li>
+    </ul>
+  </div>
+  <div class="month_bar">
+  	<ul>
+    {sta:foreach($monthArr as $key=>$val)[loop]}
+            <li><a {sta:if($month==$key)[exc]} class="active" {end:if/} href="modules.php?app=mypals_fribirth_month&month={echo:$key;/}" target="frame_content"><span>{echo:$val;/}</span></a></li>
+    {end:foreach/}	
+	</ul>
+   </div> 
+     <div id="mypals_iframe">
+		<div id="fri_bir" class="friend_list">
+			<ul class="user_list">
+                {sta:if(!empty($fir_list))[exc]}
+                {sta:foreach($fir_list as $val)[loop]}
+					<li onmouseover='changeStyle(this,{echo:$val['user_id'];/})' onmouseout='recoverStyle(this,{echo:$val['user_id'];/})'>
+						<div class="photo">
+						  <a href="home.php?h={echo:$val['user_id'];/}" target="_blank" class="avatar">
+							<img title="{echo:lp{mp_en_home};/}" src="{echo:$val['user_ico'];/}"  onerror="parent.pic_error(this)" /></a>
+						</div>
+						<dl>
+							<dt><a target="_blank" href="home.php?h={echo:$val['user_id'];/}" class="name">{echo:$val['user_name'];/}</a></dt>
+                            <dd>{echo:$val['birth_month'];/}-{echo:$val['birth_day'];/}</dd>
+                            <div class="tool" id="ctrl_{echo:$val['user_id'];/}">
+                                <a class="send_bt" href='modules.php?app=msg_creator&2id={echo:$val["user_id"];/}&nw=1' target="frame_content" title='{echo:str_replace("{he}",get_TP_pals_sex($val["user_sex"]),lp{mp_scrip});/}'></a>
+                            </div>
+						</dl>
+					</li>
+                {end:foreach/}
+                {end:if/}
+			</ul>
+		</div>
+  </div>
+<div class="clear"></div>
+{echo:page_show($isNull,$page_num,$page_total);/}
+</div>
+</body>
+</html>

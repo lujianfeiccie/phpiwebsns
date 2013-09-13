@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title></title>
+<base href='{echo:$siteDomain;/}' />
+<link rel="stylesheet" type="text/css" href="skin/default/jooyea/css/iframe.css">
+<link type="text/css" rel="stylesheet" href="servtools/calendar/css/calendar.css" />
+<script src="servtools/area.js" type="text/javascript"></script>
+</head>
+<body id="iframecontent">
+    <div class="create_button"><a href="modules.php?app=event_list&mod=all" hidefocus="true">{echo:lp{ef_all_activity};/}</a></div>
+    <h2 class="app_event">{echo:lp{ef_activity};/}</h2>
+    <div class="tabs">
+        <ul class="menu">
+            <li class="active"><a href="javascript:;">{echo:lp{ef_search_activity};/}</a></li>
+        </ul>
+    </div>
+</div>
+<table class='form_table'>
+	<form action="modules.php" name="form1"  method="get">
+		<tr>
+			<th style="width:180px;">
+                {echo:lp{ef_activity_name};/}：</th>
+			<td><input class="small-text2 mr10" type="text" name="event_name" id="event_name"  maxlength="30" autocomplete='off'></td>
+		</tr>
+		<tr>
+			<th style="width:180px;">
+                {echo:lp{ef_activity_city};/}：</th> 
+			<td><div class="form_select_div"><select id="s1" name='province'></select><select name='city' id="s2" ></select><script type="text/javascript">setup();</script></div></td>	
+		</tr>
+		<tr>
+			<th style="width:180px;">
+                {echo:lp{ef_start_date};/}：</th>
+			<td><input type="text" id="start_time1" name="start_time1" readonly="readonly" class="small-text" maxlength="30" autocomplete='off' />-<input type="text" id="start_time2" name="start_time2" readonly="readonly" class="small-text" maxlength="30" autocomplete='off' /></td>	
+		</tr>
+		<tr>
+			<th style="width:180px;">
+                {echo:lp{ef_reg_deadline};/}：</th>
+			<td><input type="text" id="deadline1" name="deadline1" readonly="readonly" class="small-text" maxlength="30" autocomplete='off' />-<input type="text" id="deadline2" name="deadline2" readonly="readonly" class="small-text" maxlength="30" autocomplete='off' /></td>	
+		</tr>
+		<tr>
+			<th style="width:180px;">
+                {echo:lp{ef_activity_sort};/}：</th> 
+			<td><div class="form_select_div">{echo:$event_type;/}</div></td>	
+		</tr>
+		<tr><th></th><td><input type="hidden" name="app" id="app" value="event_search_list">
+		<input class="regular-btn" name="submit" type="submit" value="{echo:lp{ef_search};/}"></td></tr>
+	</form>
+</table>
+<script src="servtools/calendar/js/calendar.js" type="text/javascript" language="javascript"></script>
+<script src="servtools/calendar/js/lang/cn.js" type="text/javascript" language="javascript"></script>
+<script type="text/javascript" language="javascript">
+calendar('start_time1');
+calendar('start_time2');
+calendar('deadline1');
+calendar('deadline2');
+function calendar(obj)
+{
+	new Calendar({inputField:obj,trigger:obj,dateFormat:"%Y-%m-%d %H:%M",titleFormat:"%Y %B",showTime: 24,onSelect:function(){var date = Calendar.intToDate(this.selection.get());this.hide();}});
+}
+</script>
+</body>
+</html>

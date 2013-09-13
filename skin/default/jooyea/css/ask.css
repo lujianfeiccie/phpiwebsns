@@ -1,0 +1,54 @@
+@charset "utf-8";
+/*clear start*/
+.clear{clear:both;}
+.clearfix:after{content:".";display:block;height:0;clear:both;visibility:hidden;}
+*html .clearfix{height:1%;}
+*+html .clearfix{height:1%;}
+/*clear end*/
+th.l,td.l{ padding-left:8px;text-align:left;}
+th.c{text-align:center}
+td.r{padding-right:5px; text-align:right}
+.b_none{border:none}
+.line {height:1px;margin:7px 0 3px;border-top:1px dashed #bbb;line-height:1px;}
+.ask_bar{height:35px;margin:10px 0 20px;background:url(../images/ask_bg.gif) repeat-x;}
+	.ask_bar li{float:left;height:35px;margin-left:8px;}
+		.ask_bar li a{display:block;height:30px;_width:60px; white-space:nowrap;line-height:30px;padding:0 10px;border-top:6px #f6f6f6 solid; font-weight:bold;}
+		.ask_bar li a:hover,.ask_bar .active{color:#333; text-decoration:none;background-color:#fff;}
+	.ask_class{ position:relative;display:block;float:right;height:34px;margin-right:8px;padding:0 20px 0 10px;border-top:1px #f6f6f6 solid;line-height:34px;background:url(../images/select_right.gif) 62px center no-repeat; cursor:pointer}
+		.ask_bar div.active{border:1px #ccc solid;border-bottom:none;margin-right:7px;_margin-right:8px;}
+		.ask_class dl{ position:absolute;top:33px;right:-1px; z-index:1000;display:block; min-width:100px;_width:100px;padding:5px 0 0;border-left:1px #ccc solid;border-right:1px #ccc solid;border-bottom:1px #ccc solid; background:#fff url(../images/ask_classlistbg.gif) right top no-repeat; overflow:hidden}
+		.ask_class dl dd a{display:block; height:23px;text-align:left;background:url(../images/arrow07.gif) 10px center no-repeat; padding-left:18px;line-height:23px; line-height:26px\9;}
+		.ask_class dl dd a:hover{background-color:#efefef; color:#000; text-decoration:none}
+.ask_listbox dl dt{height:25px;margin:10px 0;border-bottom:2px solid #ececec; line-height:25px;text-align:left; font-weight:bold; }
+	.ask_listbox dl dt span{position:relative; display:block;width:107px;margin-bottom:-2px;border-bottom:2px solid #ccc;}
+		.ask_listbox dl dt span img{margin:0 5px -1px;}
+	.ask_table{width:100%}
+		.ask_table td,.ask_table th{height:32px;border-bottom:1px dashed #e2e2e2;line-height:32px;color:#010004;}
+		.ask_table tfoot td{border-bottom:none}
+		span.money{margin:0 2px;background:url(../images/money.gif) no-repeat 0 3px;}
+.answer_box{ margin:10px;padding:4px; text-align:left;}
+	.answer_box a{color:#ce1221;}
+.sloved{/*background:#fdf9d8;border:1px #fdd57b solid;*/background:#f8f8f8;border:1px #dedede solid;}
+.normal{/*background:#edf7ff;border:1px #b2d0ea solid;*/background:#f8f8f8;border:1px #ececec solid;}
+	.answer_box h3{height:25px; line-height:25px;color:#333;font-size:14px;font-weight:bold;padding-left:5px;background:#f8f8f8;}
+	.sloved .answer_content{background:#f8f8f8;}
+	.answer_content{background:#fff;overflow:hidden;word-wrap:break-word;padding:10px 10px 5px 15px}
+		.answer_content dl{color:#4e4e4e;font-size:14px;line-height:28px;}
+		.answer_content h4{color:#000;font-size:14px;font-weight:bold;}
+			.answer_content h4 span{font-size:12px; font-weight:normal}
+		.answer_content p,.question_con{padding:13px 0 0 5px;font-size:14px;line-height:160%;}
+		.question_class{padding:10px 0 0;}
+		.answer_operate{float:left; width:200px; padding:7px 0 0 5px;}
+		.answer_content .answer_user{float:right;width:30px;height:30px;margin:0 10px;}
+			.answer_content .answer_user img{width:30px;height:30px;}
+		.answer_content .answer_time{float:right;padding-top:8px;color:#666666; _margin-top:-23px;}
+		.normal .answer_content h4{color:#333;}
+		.answer_time span{margin-right:8px;}
+	a.answer_btn{ display:block; width:93px; height:30px; margin-top:10px; line-height:30px; font-size:14px; text-align:center; color:#333;background:url(../images/create_bg.gif) no-repeat; }
+	a.answer_btn:hover{text-decoration:none;}
+	.answer_box .reply{background:none;text-align:left; max-height:180px;padding-left:20px;}
+	.answer_box .regular-btn {margin:5px 12px 0 0;}
+	.f14{font-size:14px; line-height:26px;}
+	
+.replenish{ margin-bottom:15px;}
+	.replenish span{font-weight:bold; display:block;}

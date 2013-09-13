@@ -1,0 +1,26 @@
+{sta:if(!empty($recommend))[exc]}
+	<div class="container">
+         <div class="sideitem_head"><h4>{echo:lp{mp_pal_recomment};/}</h4><a href="modules.php?app=user_fri_rec_more" target='frame_content'>{echo:lp{mp_more};/}</a></div>
+         <div class="sideitem_body">
+         	<ul id='user_fri_recomment' class="userlist">
+			{sta:foreach($recommend as $val)[loop]}
+			<li>
+				<a class="avatar" href="home.php?h={echo:$val['user_id'];/}" target="_blank" title="{echo:lp{f_fri};/}">
+					<img src="{echo:$val['user_ico'];/}" />
+				</a>
+				<span class="name">
+					<a class="name" href="home.php?h={echo:$val['user_id'];/}" target="_blank">{echo:$val['user_name'];/}</a>
+				</span>
+				<span>
+			    	<img style="cursor:pointer;" onclick="{echo:$send_hi;/}({echo:$val["user_id"];/})" src="skin/default/jooyea/images/hi.gif" title="{echo:lp{f_greet};/}" />
+					<img class="{echo:$show_add_friend;/}" style="cursor:pointer;" onclick="javascript:{echo:str_replace("{uid}",$val['user_id'],$send_join_js);/}" src="skin/default/jooyea/images/add.gif"  title="{echo:str_replace("{he}",get_TP_pals_sex($val['user_sex']),lp{mp_add_mypals});/}" />
+				</span>
+			</li>
+			{end:foreach/}
+		</ul>
+	</div>
+ </div>
+{end:if/}
+		
+	
+      
